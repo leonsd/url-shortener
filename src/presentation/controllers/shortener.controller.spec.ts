@@ -63,6 +63,15 @@ describe('Shortener Controller', () => {
     expect(httpResponse.body).toEqual(new MissingParamError('url'));
   });
 
+  test('Should return 400 if no body is provided', async () => {
+    const { sut } = makeSut();
+    const httpRequest = {};
+    const httpResponse = await sut.handle(httpRequest);
+
+    expect(httpResponse.statusCode).toBe(400);
+    expect(httpResponse.body).toEqual(new MissingParamError('url'));
+  });
+
   test('Should return 400 if invalid url', async () => {
     const { sut, urlValidatorAdapterStub } = makeSut();
     jest.spyOn(urlValidatorAdapterStub, 'isValid').mockReturnValueOnce(false);
