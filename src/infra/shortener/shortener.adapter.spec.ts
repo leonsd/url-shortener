@@ -25,4 +25,19 @@ describe('Shortener Adapter', () => {
 
     expect(fn).toThrow(Error);
   });
+
+  test('Should return code with success if pass size parameter', async () => {
+    const sut = makeSut();
+    const size = 6;
+    const code = sut.shorten(size);
+
+    expect(code).toBe('123456');
+  });
+
+  test('Should return code with success if no pass size parameter', async () => {
+    const sut = makeSut();
+    const code = sut.shorten();
+
+    expect(code).toBe('123456');
+  });
 });
