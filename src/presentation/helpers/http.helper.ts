@@ -1,7 +1,7 @@
 import { ServerError } from '../errors';
 import { HttpResponse } from '../protocols/http.protocol';
 
-export const created = <T>(data: T): HttpResponse => {
+export const created = <T>(data: T): HttpResponse<T> => {
   return {
     statusCode: 201,
     body: data,
