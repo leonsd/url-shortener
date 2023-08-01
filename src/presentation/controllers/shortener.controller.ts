@@ -3,10 +3,12 @@ import {
   HttpRequest,
   HttpResponse,
   ShortenerDto,
+  ShortenedUrl,
   UrlValidator,
 } from './shortener.protocol';
-import { InvalidParamError, MissingParamError, ServerError } from '../errors';
+import { InvalidParamError, MissingParamError } from '../errors';
 import { UrlShortener } from '../../domain/usecases/url-shortener.usecase';
+import { badRequest, created, serverError } from '../helpers/http.helper';
 
 export class ShortenerController implements Controller {
   constructor(
@@ -14,37 +16,25 @@ export class ShortenerController implements Controller {
     private readonly urlShortener: UrlShortener,
   ) {}
 
-  async handle(httpRequest: HttpRequest<ShortenerDto>): Promise<HttpResponse> {
+  async handle(
+    httpRequest: HttpRequest<ShortenerDto>,
+  ): Promise<HttpResponse<ShortenedUrl | Error>> {
     try {
       const url = httpRequest.body?.url ?? '';
       if (!url) {
-        return {
-          statusCode: 400,
-          body: new MissingParamError('url'),
-        };
+        return badRequest(new MissingParamError('url'));
       }
 
       const isValid = this.urlValidator.isValid(url);
       if (!isValid) {
-        return {
-          statusCode: 400,
-          body: new InvalidParamError('url'),
-        };
+        return badRequest(new InvalidParamError('url'));
       }
 
-      const urlShortener = this.urlShortener.run(url);
+      const { shortenedUrl } = await this.urlShortener.run(url);
 
-      return {
-        statusCode: 200,
-        body: {
-          urlShortener,
-        },
-      };
+      return created({ shortenedUrl });
     } catch (error) {
-      return {
-        statusCode: 500,
-        body: new ServerError(),
-      };
+      return serverError();
     }
   }
 }
