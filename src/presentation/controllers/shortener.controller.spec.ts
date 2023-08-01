@@ -1,8 +1,8 @@
+import { ShortenerController } from './shortener.controller';
+import { UrlValidator } from './shortener.protocol';
 import { UrlShortenerModel } from '../../domain/models/url-shortener.model';
 import { UrlShortener } from '../../domain/usecases/url-shortener.usecase';
 import { InvalidParamError, MissingParamError, ServerError } from '../errors';
-import { UrlValidator } from '../protocols/url-validator.protocol';
-import { ShortenerController } from './shortener.controller';
 
 const makeUrlValidatorAdapterStub = (): UrlValidator => {
   class UrlValidatorAdapterStub implements UrlValidator {
