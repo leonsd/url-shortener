@@ -114,4 +114,17 @@ describe('Shortener Controller', () => {
     expect(httpResponse.statusCode).toBe(500);
     expect(httpResponse.body).toEqual(new ServerError());
   });
+
+  test('Should return 201 if success', async () => {
+    const { sut } = makeSut();
+    const httpRequest = {
+      body: {
+        url: 'valid_url',
+      },
+    };
+    const httpResponse = await sut.handle(httpRequest);
+
+    expect(httpResponse.statusCode).toBe(201);
+    expect(httpResponse.body).toEqual({ shortenedUrl: 'shortened_url' });
+  });
 });
