@@ -1,3 +1,5 @@
+import { UrlShortenerModel } from '../../domain/models/url-shortener.model';
+import { UrlShortener } from '../../domain/usecases/url-shortener.usecase';
 import { InvalidParamError, MissingParamError } from '../errors';
 import { UrlValidator } from '../protocols/url-validator.protocol';
 import { ShortenerController } from './shortener.controller';
@@ -12,22 +14,55 @@ const makeUrlValidatorAdapterStub = (): UrlValidator => {
   return new UrlValidatorAdapterStub();
 };
 
+const makeUrlShortenerStub = (): UrlShortener => {
+  class UrlShortenerStub implements UrlShortener {
+    run(url: string): Promise<UrlShortenerModel> {
+      return Promise.resolve({
+        id: 'valid_id',
+        urlOriginal: 'url_original',
+        urlShortener: 'url_shortener',
+      });
+    }
+  }
+
+  return new UrlShortenerStub();
+};
+
 interface SutTypes {
   sut: ShortenerController;
   urlValidatorAdapterStub: UrlValidator;
+  urlShortenerStub: UrlShortener;
 }
 
 const makeSut = (): SutTypes => {
   const urlValidatorAdapterStub = makeUrlValidatorAdapterStub();
-  const sut = new ShortenerController(urlValidatorAdapterStub);
+  const urlShortenerStub = makeUrlShortenerStub();
+  const sut = new ShortenerController(
+    urlValidatorAdapterStub,
+    urlShortenerStub,
+  );
 
   return {
     sut,
     urlValidatorAdapterStub,
+    urlShortenerStub,
   };
 };
 
 describe('Shortener Controller', () => {
+  test('Should return 400 if no url is provided', async () => {
+    const { sut } = makeSut();
+    const httpRequest = {
+      body: {
+        url: '',
+      },
+    };
+    const httpResponse = await sut.handle(httpRequest);
+
+    expect(httpResponse.statusCode).toBe(400);
+    expect(httpResponse.body).toEqual(new MissingParamError('url'));
+  });
+
   test('Should return 400 if invalid url', async () => {
     const { sut, urlValidatorAdapterStub } = makeSut();
     jest.spyOn(urlValidatorAdapterStub, 'isValid').mockReturnValueOnce(false);
@@ -42,16 +77,16 @@ describe('Shortener Controller', () => {
     expect(httpResponse.body).toEqual(new InvalidParamError('url'));
   });
 
-  test('Should return 400 if no url is provided', async () => {
-    const { sut } = makeSut();
+  test('Should call urlShortener.run with correct value', async () => {
+    const { sut, urlShortenerStub } = makeSut();
+    const runSpy = jest.spyOn(urlShortenerStub, 'run');
     const httpRequest = {
       body: {
-        url: '',
+        url: 'valid_url',
       },
     };
-    const httpResponse = await sut.handle(httpRequest);
+    await sut.handle(httpRequest);
 
-    expect(httpResponse.statusCode).toBe(400);
-    expect(httpResponse.body).toEqual(new MissingParamError('url'));
+    expect(runSpy).toHaveBeenCalledWith(httpRequest.body.url);
   });
 });
