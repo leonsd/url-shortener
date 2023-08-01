@@ -1,6 +1,6 @@
 import { UrlShortenerModel } from '../../domain/models/url-shortener.model';
 import { UrlShortener } from '../../domain/usecases/url-shortener.usecase';
-import { InvalidParamError, MissingParamError } from '../errors';
+import { InvalidParamError, MissingParamError, ServerError } from '../errors';
 import { UrlValidator } from '../protocols/url-validator.protocol';
 import { ShortenerController } from './shortener.controller';
 
@@ -88,5 +88,21 @@ describe('Shortener Controller', () => {
     await sut.handle(httpRequest);
 
     expect(runSpy).toHaveBeenCalledWith(httpRequest.body.url);
+  });
+
+  test('Should return 500 if urlShortener.run throws', async () => {
+    const { sut, urlShortenerStub } = makeSut();
+    jest.spyOn(urlShortenerStub, 'run').mockImplementationOnce(() => {
+      throw new Error('Server error');
+    });
+    const httpRequest = {
+      body: {
+        url: 'valid_url',
+      },
+    };
+    const httpResponse = await sut.handle(httpRequest);
+
+    expect(httpResponse.statusCode).toBe(500);
+    expect(httpResponse.body).toEqual(new ServerError());
   });
 });
