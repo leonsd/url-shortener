@@ -15,7 +15,7 @@ const makeSut = (): Shortener => {
 };
 
 describe('Shortener Adapter', () => {
-  test('Should throw if shorten failed', async () => {
+  test('Should throw if nanoid failed', async () => {
     const sut = makeSut();
     const size = 6;
     jest.spyOn(nanoidModule, 'nanoid').mockImplementationOnce(() => {
