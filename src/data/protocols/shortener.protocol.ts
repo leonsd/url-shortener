@@ -1,3 +1,3 @@
 export interface Shortener {
-  shorten(str: string): string;
+  shorten(size?: number): string;
 }

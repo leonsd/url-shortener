@@ -12,7 +12,8 @@ export class CreateShortenedUrl implements UrlShortener {
   ) {}
 
   async run(originalUrl: string): Promise<UrlShortenerModel> {
-    const shortened = this.shortener.shorten(originalUrl);
+    const size = 6;
+    const shortened = this.shortener.shorten(size);
     const urlData = {
       original: originalUrl,
       shortened,

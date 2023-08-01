@@ -9,9 +9,15 @@ import {
   UrlShortenerRepository,
 } from '../protocols/url-shortener-repository.protocol';
 
+jest.mock('nanoid', () => {
+  return {
+    nanoid: (size = 21) => '123456',
+  };
+});
+
 const makeUrlShortenerStub = (): Shortener => {
   class UrlShortener implements Shortener {
-    shorten(str: string): string {
+    shorten(size = 6): string {
       return 'shortened_url';
     }
   }
@@ -55,13 +61,15 @@ const makeSut = (): SutTypes => {
 };
 
 describe('UrlShortener', () => {
-  test('Should call shortener.shorten with correct value', async () => {
+  test('Should throw if shortener.shorten throws', async () => {
     const { sut, urlShortenerStub } = makeSut();
-    const createSpy = jest.spyOn(urlShortenerStub, 'shorten');
+    jest.spyOn(urlShortenerStub, 'shorten').mockImplementationOnce(() => {
+      throw new Error();
+    });
     const originalUrl = 'valid_original_url';
-    await sut.run(originalUrl);
+    const promise = sut.run(originalUrl);
 
-    expect(createSpy).toHaveBeenCalledWith(originalUrl);
+    expect(promise).rejects.toThrow();
   });
 
   test('Should call UrlShortenerRepository.create with correct value', async () => {
