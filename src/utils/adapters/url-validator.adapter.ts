@@ -3,6 +3,6 @@ import { UrlValidator } from '../../presentation/protocols/url-validator.protoco
 
 export class UrlValidatorAdapter implements UrlValidator {
   isValid(url: string): boolean {
-    return validator.isURL(url, { require_valid_protocol: true });
+    return validator.isURL(url);
   }
 }

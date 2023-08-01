@@ -28,4 +28,13 @@ describe('UrlValidator Adapter', () => {
 
     expect(isValid).toBe(false);
   });
+
+  test('Should calls validator.isURL with correct value', () => {
+    const sut = makeSut();
+    const isURLSpy = jest.spyOn(validator, 'isURL').mockReturnValueOnce(false);
+    const url = 'any_url.com';
+    sut.isValid(url);
+
+    expect(isURLSpy).toHaveBeenCalledWith(url);
+  });
 });
