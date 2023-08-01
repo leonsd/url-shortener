@@ -15,5 +15,19 @@ describe('Shortener Controller', () => {
     const httpResponse = await sut.handle(httpRequest);
 
     expect(httpResponse.statusCode).toBe(400);
+    expect(httpResponse.body).toEqual(new Error('Invalid url'));
+  });
+
+  test('Should return 400 if no url is provided', async () => {
+    const sut = makeSut();
+    const httpRequest = {
+      body: {
+        url: '',
+      },
+    };
+    const httpResponse = await sut.handle(httpRequest);
+
+    expect(httpResponse.statusCode).toBe(400);
+    expect(httpResponse.body).toEqual(new Error('Missing url'));
   });
 });
