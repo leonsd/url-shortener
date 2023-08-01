@@ -7,11 +7,17 @@ export class ShortenerController implements Controller {
   async handle(httpRequest: HttpRequest<ShortenerDto>): Promise<HttpResponse> {
     const url = httpRequest.body?.url ?? '';
     try {
+      if (!url) {
+        return {
+          statusCode: 400,
+          body: new Error('Missing url'),
+        };
+      }
       new URL(url);
     } catch (error) {
       return {
         statusCode: 400,
-        body: new Error(),
+        body: new Error('Invalid url'),
       };
     }
 
