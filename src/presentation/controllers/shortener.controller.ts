@@ -2,6 +2,7 @@ import { URL } from 'url';
 import { Controller } from '../protocols/controller.protocol';
 import { HttpRequest, HttpResponse } from '../protocols/http.protocol';
 import { ShortenerDto } from '../protocols/shortener-dto.protocol';
+import { InvalidParamError, MissingParamError } from '../errors';
 
 export class ShortenerController implements Controller {
   async handle(httpRequest: HttpRequest<ShortenerDto>): Promise<HttpResponse> {
@@ -10,14 +11,14 @@ export class ShortenerController implements Controller {
       if (!url) {
         return {
           statusCode: 400,
-          body: new Error('Missing url'),
+          body: new MissingParamError('url'),
         };
       }
       new URL(url);
     } catch (error) {
       return {
         statusCode: 400,
-        body: new Error('Invalid url'),
+        body: new InvalidParamError('url'),
       };
     }
 

@@ -1,3 +1,4 @@
+import { InvalidParamError, MissingParamError } from '../errors';
 import { ShortenerController } from './shortener.controller';
 
 const makeSut = (): ShortenerController => {
@@ -15,7 +16,7 @@ describe('Shortener Controller', () => {
     const httpResponse = await sut.handle(httpRequest);
 
     expect(httpResponse.statusCode).toBe(400);
-    expect(httpResponse.body).toEqual(new Error('Invalid url'));
+    expect(httpResponse.body).toEqual(new InvalidParamError('url'));
   });
 
   test('Should return 400 if no url is provided', async () => {
@@ -28,6 +29,6 @@ describe('Shortener Controller', () => {
     const httpResponse = await sut.handle(httpRequest);
 
     expect(httpResponse.statusCode).toBe(400);
-    expect(httpResponse.body).toEqual(new Error('Missing url'));
+    expect(httpResponse.body).toEqual(new MissingParamError('url'));
   });
 });
