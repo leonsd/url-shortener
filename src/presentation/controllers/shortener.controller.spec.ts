@@ -19,8 +19,8 @@ const makeUrlShortenerStub = (): UrlShortener => {
     run(url: string): Promise<UrlShortenerModel> {
       return Promise.resolve({
         id: 'valid_id',
-        urlOriginal: 'url_original',
-        urlShortener: 'url_shortener',
+        originalUrl: 'original_url',
+        shortenedUrl: 'shortened_url',
       });
     }
   }
