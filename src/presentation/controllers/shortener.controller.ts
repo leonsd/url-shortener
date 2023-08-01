@@ -3,9 +3,13 @@ import { HttpRequest, HttpResponse } from '../protocols/http.protocol';
 import { ShortenerDto } from '../protocols/shortener-dto.protocol';
 import { InvalidParamError, MissingParamError } from '../errors';
 import { UrlValidator } from '../protocols/url-validator.protocol';
+import { UrlShortener } from '../../domain/usecases/url-shortener.usecase';
 
 export class ShortenerController implements Controller {
-  constructor(private readonly urlValidator: UrlValidator) {}
+  constructor(
+    private readonly urlValidator: UrlValidator,
+    private readonly urlShortener: UrlShortener,
+  ) {}
 
   async handle(httpRequest: HttpRequest<ShortenerDto>): Promise<HttpResponse> {
     const url = httpRequest.body?.url ?? '';
@@ -24,10 +28,12 @@ export class ShortenerController implements Controller {
       };
     }
 
+    const urlShortener = this.urlShortener.run(url);
+
     return {
       statusCode: 200,
       body: {
-        urlShortener: 'url_shortener',
+        urlShortener,
       },
     };
   }
