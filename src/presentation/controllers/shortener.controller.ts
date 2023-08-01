@@ -1,21 +1,23 @@
-import { URL } from 'url';
 import { Controller } from '../protocols/controller.protocol';
 import { HttpRequest, HttpResponse } from '../protocols/http.protocol';
 import { ShortenerDto } from '../protocols/shortener-dto.protocol';
 import { InvalidParamError, MissingParamError } from '../errors';
+import { UrlValidator } from '../protocols/url-validator.protocol';
 
 export class ShortenerController implements Controller {
+  constructor(private readonly urlValidator: UrlValidator) {}
+
   async handle(httpRequest: HttpRequest<ShortenerDto>): Promise<HttpResponse> {
     const url = httpRequest.body?.url ?? '';
-    try {
-      if (!url) {
-        return {
-          statusCode: 400,
-          body: new MissingParamError('url'),
-        };
-      }
-      new URL(url);
-    } catch (error) {
+    if (!url) {
+      return {
+        statusCode: 400,
+        body: new MissingParamError('url'),
+      };
+    }
+
+    const isValid = this.urlValidator.isValid(url);
+    if (!isValid) {
       return {
         statusCode: 400,
         body: new InvalidParamError('url'),
@@ -24,7 +26,9 @@ export class ShortenerController implements Controller {
 
     return {
       statusCode: 200,
-      body: {},
+      body: {
+        urlShortener: 'url_shortener',
+      },
     };
   }
 }
