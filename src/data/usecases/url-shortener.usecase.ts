@@ -4,6 +4,7 @@ import {
   Shortener,
   CreateUrlShortenerRepository,
 } from './url-shortener.protocol';
+import { mapper } from './helpers/map.helper';
 
 export class CreateShortenedUrl implements UrlShortener {
   constructor(
@@ -20,6 +21,6 @@ export class CreateShortenedUrl implements UrlShortener {
     };
     const url = await this.urlShortenerRepository.create(urlData);
 
-    return url;
+    return mapper(url);
   }
 }
