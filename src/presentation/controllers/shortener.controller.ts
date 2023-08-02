@@ -30,9 +30,9 @@ export class ShortenerController implements Controller {
         return badRequest(new InvalidParamError('url'));
       }
 
-      const { shortenedUrl } = await this.createShortenedUrl.run(url);
+      const { shortened } = await this.createShortenedUrl.run(url);
 
-      return created<ShortenedUrl>({ shortenedUrl });
+      return created<ShortenedUrl>({ shortenedUrl: 'domain' + shortened });
     } catch (error) {
       return serverError();
     }

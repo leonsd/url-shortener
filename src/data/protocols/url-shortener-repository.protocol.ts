@@ -5,6 +5,6 @@ export interface UrlData {
   shortened: string;
 }
 
-export interface UrlShortenerRepository {
+export interface CreateUrlShortenerRepository {
   create(urlData: UrlData): Promise<UrlShortenerModel>;
 }

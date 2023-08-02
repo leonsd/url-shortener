@@ -19,8 +19,8 @@ const makeUrlShortenerStub = (): UrlShortener => {
     run(url: string): Promise<UrlShortenerModel> {
       return Promise.resolve({
         id: 'valid_id',
-        originalUrl: 'original_url',
-        shortenedUrl: 'shortened_url',
+        original: 'original_url',
+        shortened: 'shortened_url',
       });
     }
   }
@@ -37,10 +37,7 @@ interface SutTypes {
 const makeSut = (): SutTypes => {
   const urlValidatorAdapterStub = makeUrlValidatorAdapterStub();
   const urlShortenerStub = makeUrlShortenerStub();
-  const sut = new ShortenerController(
-    urlValidatorAdapterStub,
-    urlShortenerStub,
-  );
+  const sut = new ShortenerController(urlValidatorAdapterStub, urlShortenerStub);
 
   return {
     sut,
@@ -125,6 +122,8 @@ describe('Shortener Controller', () => {
     const httpResponse = await sut.handle(httpRequest);
 
     expect(httpResponse.statusCode).toBe(201);
-    expect(httpResponse.body).toEqual({ shortenedUrl: 'shortened_url' });
+    expect(httpResponse.body).toEqual({
+      shortenedUrl: 'domain' + 'shortened_url',
+    });
   });
 });

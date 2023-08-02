@@ -2,13 +2,13 @@ import {
   UrlShortener,
   UrlShortenerModel,
   Shortener,
-  UrlShortenerRepository,
+  CreateUrlShortenerRepository,
 } from './url-shortener.protocol';
 
 export class CreateShortenedUrl implements UrlShortener {
   constructor(
     private readonly shortener: Shortener,
-    private readonly urlShortenerRepository: UrlShortenerRepository,
+    private readonly urlShortenerRepository: CreateUrlShortenerRepository,
   ) {}
 
   async run(originalUrl: string): Promise<UrlShortenerModel> {

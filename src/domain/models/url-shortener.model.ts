@@ -1,5 +1,5 @@
 export interface UrlShortenerModel {
   id: string;
-  originalUrl: string;
-  shortenedUrl: string;
+  original: string;
+  shortened: string;
 }

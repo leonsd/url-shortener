@@ -6,7 +6,7 @@ import {
 } from './url-shortener.protocol';
 import {
   UrlData,
-  UrlShortenerRepository,
+  CreateUrlShortenerRepository,
 } from '../protocols/url-shortener-repository.protocol';
 
 jest.mock('nanoid', () => {
@@ -25,13 +25,13 @@ const makeUrlShortenerStub = (): Shortener => {
   return new UrlShortener();
 };
 
-const makeUrlShortenerRepositoryStub = (): UrlShortenerRepository => {
-  class UrlShortenerRepositoryStub implements UrlShortenerRepository {
+const makeUrlShortenerRepositoryStub = (): CreateUrlShortenerRepository => {
+  class UrlShortenerRepositoryStub implements CreateUrlShortenerRepository {
     create(urlData: UrlData): Promise<UrlShortenerModel> {
       return Promise.resolve({
         id: 'valid_id',
-        originalUrl: 'original_id',
-        shortenedUrl: 'shortened_id',
+        original: 'original_id',
+        shortened: 'shortened_id',
       });
     }
   }
@@ -42,7 +42,7 @@ const makeUrlShortenerRepositoryStub = (): UrlShortenerRepository => {
 interface SutTypes {
   sut: UrlShortener;
   urlShortenerStub: Shortener;
-  urlShortenerRepositoryStub: UrlShortenerRepository;
+  urlShortenerRepositoryStub: CreateUrlShortenerRepository;
 }
 
 const makeSut = (): SutTypes => {
