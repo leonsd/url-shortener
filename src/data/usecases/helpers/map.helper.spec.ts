@@ -14,6 +14,6 @@ describe('Map Helper', () => {
     expect(mapped).toBeTruthy();
     expect(mapped.id).toBeTruthy();
     expect(mapped.original).toBe(url.original);
-    expect(mapped.shortened).toBe(`${env.domain}/${url.shortened}`);
+    expect(mapped.shortened).toBe(`${env.domain}:${env.port}/${url.shortened}`);
   });
 });

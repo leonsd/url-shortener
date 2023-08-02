@@ -123,7 +123,7 @@ describe('Shortener Controller', () => {
 
     expect(httpResponse.statusCode).toBe(201);
     expect(httpResponse.body).toEqual({
-      shortenedUrl: 'domain' + 'shortened_url',
+      shortenedUrl: 'shortened_url',
     });
   });
 });

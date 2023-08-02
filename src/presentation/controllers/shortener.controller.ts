@@ -32,7 +32,7 @@ export class ShortenerController implements Controller {
 
       const { shortened } = await this.createShortenedUrl.run(url);
 
-      return created<ShortenedUrl>({ shortenedUrl: 'domain' + shortened });
+      return created<ShortenedUrl>({ shortenedUrl: shortened });
     } catch (error) {
       return serverError();
     }
