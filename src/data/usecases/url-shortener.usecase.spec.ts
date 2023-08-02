@@ -83,4 +83,17 @@ describe('UrlShortener', () => {
       shortened: 'shortened_url',
     });
   });
+
+  test('Should throw if urlShortenerRepository.create throws', async () => {
+    const { sut, urlShortenerRepositoryStub } = makeSut();
+    jest
+      .spyOn(urlShortenerRepositoryStub, 'create')
+      .mockImplementationOnce(() => {
+        throw new Error();
+      });
+    const originalUrl = 'valid_original_url';
+    const promise = sut.run(originalUrl);
+
+    expect(promise).rejects.toThrow();
+  });
 });
