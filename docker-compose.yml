@@ -1,0 +1,28 @@
+version: '3'
+services:
+  # Serviço do MongoDB
+  mongo:
+    image: mongo:6.0.8
+    container_name: mongo_db
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+  # Serviço da aplicação Node.js
+  node_app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: user_registration_app
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mongo
+    environment:
+      - MONGO_URL=mongodb://mongo:27017/url-shortener
+    volumes:
+      - .:/usr/src/app
+
+volumes:
+  mongo_data:
