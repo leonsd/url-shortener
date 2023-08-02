@@ -13,7 +13,7 @@ import { badRequest, created, serverError } from '../helpers/http.helper';
 export class ShortenerController implements Controller {
   constructor(
     private readonly urlValidator: UrlValidator,
-    private readonly urlShortener: UrlShortener,
+    private readonly createShortenedUrl: UrlShortener,
   ) {}
 
   async handle(
@@ -30,7 +30,7 @@ export class ShortenerController implements Controller {
         return badRequest(new InvalidParamError('url'));
       }
 
-      const { shortenedUrl } = await this.urlShortener.run(url);
+      const { shortenedUrl } = await this.createShortenedUrl.run(url);
 
       return created<ShortenedUrl>({ shortenedUrl });
     } catch (error) {
