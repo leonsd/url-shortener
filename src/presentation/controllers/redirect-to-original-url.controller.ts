@@ -1,6 +1,6 @@
 import { GetUrl } from '../../domain/usecases/get-url.usecase';
-import { InvalidParamError } from '../errors';
-import { badRequest, ok, serverError } from '../helpers/http.helper';
+import { InvalidParamError, NotFoundError } from '../errors';
+import { badRequest, notFound, ok, serverError } from '../helpers/http.helper';
 import { CodeValidator } from '../protocols/code-validator.protocol';
 import { Controller, HttpRequest, HttpResponse } from './shortener.protocol';
 
@@ -20,6 +20,10 @@ export class RedirectToOriginalUrlController implements Controller {
       }
 
       const url = await this.getUrl.run(code);
+
+      if (!url) {
+        return notFound(new NotFoundError('Url'));
+      }
 
       return ok(url);
     } catch (error) {
