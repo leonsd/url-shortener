@@ -6,6 +6,7 @@ export class GetUrlUseCase implements GetUrl {
   constructor(private readonly urlRepository: GetUrlRepository) {}
 
   async run(code: string): Promise<UrlShortenerModel> {
-    return null as unknown as UrlShortenerModel;
+    const url = await this.urlRepository.getByCode(code);
+    return url;
   }
 }
