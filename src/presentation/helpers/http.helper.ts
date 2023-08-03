@@ -1,6 +1,13 @@
 import { ServerError } from '../errors';
 import { HttpResponse } from '../protocols/http.protocol';
 
+export const ok = <T>(data: T): HttpResponse<T> => {
+  return {
+    statusCode: 200,
+    body: data,
+  };
+};
+
 export const created = <T>(data: T): HttpResponse<T> => {
   return {
     statusCode: 201,

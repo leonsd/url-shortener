@@ -1,6 +1,6 @@
 import { GetUrl } from '../../domain/usecases/get-url.usecase';
 import { InvalidParamError } from '../errors';
-import { badRequest, serverError } from '../helpers/http.helper';
+import { badRequest, ok, serverError } from '../helpers/http.helper';
 import { CodeValidator } from '../protocols/code-validator.protocol';
 import { Controller, HttpRequest, HttpResponse } from './shortener.protocol';
 
@@ -21,12 +21,7 @@ export class RedirectToOriginalUrlController implements Controller {
 
       const url = await this.getUrl.run(code);
 
-      return {
-        statusCode: 200,
-        body: {
-          url,
-        },
-      };
+      return ok(url);
     } catch (error) {
       return serverError();
     }
