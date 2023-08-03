@@ -59,6 +59,21 @@ describe('RedirectToOriginalUrl Controller', () => {
     expect(httpResponse.statusCode).toBe(400);
   });
 
+  test('Should return 404 if GetUrlUseCase.run return null', async () => {
+    const { sut, getUrlStub } = makeSut();
+    jest.spyOn(getUrlStub, 'run').mockImplementationOnce(() => {
+      return Promise.resolve(null);
+    });
+    const httpRequest = {
+      params: {
+        code: 'valid_code',
+      },
+    };
+    const httpResponse = await sut.handle(httpRequest);
+
+    expect(httpResponse.statusCode).toBe(404);
+  });
+
   test('Should return 500 if code validator throws', async () => {
     const { sut, codeValidatorStub } = makeSut();
     jest.spyOn(codeValidatorStub, 'isValid').mockImplementationOnce(() => {
