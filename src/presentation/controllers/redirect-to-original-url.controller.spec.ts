@@ -1,3 +1,5 @@
+import { UrlShortenerModel } from '../../domain/models/url-shortener.model';
+import { GetUrl } from '../../domain/usecases/get-url.usecase';
 import { CodeValidator } from '../protocols/code-validator.protocol';
 import { RedirectToOriginalUrlController } from './redirect-to-original-url.controller';
 
@@ -11,18 +13,35 @@ const makeCodeValidatorAdapterStub = (): CodeValidator => {
   return new CodeValidatorAdapterStub();
 };
 
+const makeGetUrlStub = (): GetUrl => {
+  class GetUrlStub implements GetUrl {
+    run(code: string): Promise<UrlShortenerModel> {
+      return Promise.resolve({
+        id: 'valid_id',
+        original: 'valid_original',
+        shortened: 'valid_shortened',
+      });
+    }
+  }
+
+  return new GetUrlStub();
+};
+
 interface SutTypes {
   sut: RedirectToOriginalUrlController;
   codeValidatorStub: CodeValidator;
+  getUrlStub: GetUrl;
 }
 
 const makeSut = (): SutTypes => {
   const codeValidatorStub = makeCodeValidatorAdapterStub();
-  const sut = new RedirectToOriginalUrlController(codeValidatorStub);
+  const getUrlStub = makeGetUrlStub();
+  const sut = new RedirectToOriginalUrlController(codeValidatorStub, getUrlStub);
 
   return {
     sut,
     codeValidatorStub,
+    getUrlStub,
   };
 };
 
@@ -48,6 +67,21 @@ describe('RedirectToOriginalUrl Controller', () => {
     const httpRequest = {
       params: {
         code: 'invalid_code',
+      },
+    };
+    const httpResponse = await sut.handle(httpRequest);
+
+    expect(httpResponse.statusCode).toBe(500);
+  });
+
+  test('Should return 500 if get url throws', async () => {
+    const { sut, getUrlStub } = makeSut();
+    jest.spyOn(getUrlStub, 'run').mockImplementationOnce(() => {
+      throw new Error();
+    });
+    const httpRequest = {
+      params: {
+        code: 'valid_code',
       },
     };
     const httpResponse = await sut.handle(httpRequest);
