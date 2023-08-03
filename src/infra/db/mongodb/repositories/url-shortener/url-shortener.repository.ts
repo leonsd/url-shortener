@@ -8,8 +8,8 @@ import { UrlShortenerModel } from '../../../../../domain/models/url-shortener.mo
 export class UrlShortenerMongoRepository implements CreateUrlShortenerRepository {
   async create(urlData: UrlData): Promise<UrlShortenerModel> {
     const urlCollection = await MongoHelper.getCollection('urls');
-    const url = await urlCollection.insertOne(urlData);
+    await urlCollection.insertOne(urlData);
 
-    return MongoHelper.map<UrlData>(url, urlData);
+    return MongoHelper.map<UrlData>(urlData);
   }
 }

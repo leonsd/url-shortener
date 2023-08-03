@@ -21,12 +21,10 @@ export const MongoHelper = {
   },
 
   map<T>(
-    result: InsertOneResult<Document>,
     data: T & { _id?: string },
   ): Omit<T & { _id?: string }, '_id'> & { id: string } {
-    const id = result.insertedId.toJSON();
     const { _id, ...restData } = data;
 
-    return Object.assign({}, restData, { id });
+    return Object.assign({}, restData, { id: String(_id) });
   },
 };
