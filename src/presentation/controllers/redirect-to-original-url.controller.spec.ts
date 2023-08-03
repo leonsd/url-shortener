@@ -39,4 +39,19 @@ describe('RedirectToOriginalUrl Controller', () => {
 
     expect(httpResponse.statusCode).toBe(400);
   });
+
+  test('Should return 500 if code validator throws', async () => {
+    const { sut, codeValidatorStub } = makeSut();
+    jest.spyOn(codeValidatorStub, 'isValid').mockImplementationOnce(() => {
+      throw new Error();
+    });
+    const httpRequest = {
+      params: {
+        code: 'invalid_code',
+      },
+    };
+    const httpResponse = await sut.handle(httpRequest);
+
+    expect(httpResponse.statusCode).toBe(500);
+  });
 });
