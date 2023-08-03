@@ -1,4 +1,4 @@
-import { UrlShortenerModel } from '../url-shortener.protocol';
+import { UrlShortenerModel } from '../shortener/url-shortener.protocol';
 import { env } from '../../../main/config/env.config';
 
 export const mapper = (url: UrlShortenerModel): UrlShortenerModel => {

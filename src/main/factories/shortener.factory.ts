@@ -1,6 +1,6 @@
 import { ShortenerAdapter } from '../../infra/shortener/shortener.adapter';
-import { UrlShortenerMongoRepository } from '../../infra/db/mongodb/repositories/url-shortener.repository';
-import { CreateShortenedUrl } from '../../data/usecases/url-shortener.usecase';
+import { UrlShortenerMongoRepository } from '../../infra/db/mongodb/repositories/url-shortener/url-shortener.repository';
+import { CreateShortenedUrl } from '../../data/usecases/shortener/url-shortener.usecase';
 import { ShortenerController } from '../../presentation/controllers/shortener.controller';
 import { UrlValidatorAdapter } from '../../utils/adapters/url-validator.adapter';
 import { Controller } from '../../presentation/protocols/controller.protocol';

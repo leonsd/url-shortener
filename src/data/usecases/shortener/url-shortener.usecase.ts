@@ -4,7 +4,7 @@ import {
   Shortener,
   CreateUrlShortenerRepository,
 } from './url-shortener.protocol';
-import { mapper } from './helpers/map.helper';
+import { mapper } from '../helpers/map.helper';
 
 export class CreateShortenedUrl implements UrlShortener {
   constructor(

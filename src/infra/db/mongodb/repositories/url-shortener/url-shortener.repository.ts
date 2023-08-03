@@ -1,9 +1,9 @@
-import { MongoHelper } from '../helpers/mongo.helper';
+import { MongoHelper } from '../../helpers/mongo.helper';
 import {
   CreateUrlShortenerRepository,
   UrlData,
-} from '../../../../data/protocols/url-shortener-repository.protocol';
-import { UrlShortenerModel } from '../../../../domain/models/url-shortener.model';
+} from '../../../../../data/protocols/url-shortener-repository.protocol';
+import { UrlShortenerModel } from '../../../../../domain/models/url-shortener.model';
 
 export class UrlShortenerMongoRepository implements CreateUrlShortenerRepository {
   async create(urlData: UrlData): Promise<UrlShortenerModel> {

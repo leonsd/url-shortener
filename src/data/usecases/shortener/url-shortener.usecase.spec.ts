@@ -2,12 +2,10 @@ import { CreateShortenedUrl } from './url-shortener.usecase';
 import {
   Shortener,
   UrlShortener,
+  CreateUrlShortenerRepository,
+  UrlData,
   UrlShortenerModel,
 } from './url-shortener.protocol';
-import {
-  UrlData,
-  CreateUrlShortenerRepository,
-} from '../protocols/url-shortener-repository.protocol';
 
 jest.mock('nanoid', () => {
   return {
