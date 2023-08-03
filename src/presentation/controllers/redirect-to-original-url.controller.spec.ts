@@ -88,4 +88,16 @@ describe('RedirectToOriginalUrl Controller', () => {
 
     expect(httpResponse.statusCode).toBe(500);
   });
+
+  test('Should return 200 if success', async () => {
+    const { sut } = makeSut();
+    const httpRequest = {
+      params: {
+        code: 'valid_code',
+      },
+    };
+    const httpResponse = await sut.handle(httpRequest);
+
+    expect(httpResponse.statusCode).toBe(200);
+  });
 });
