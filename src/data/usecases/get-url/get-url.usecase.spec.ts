@@ -4,7 +4,7 @@ import { GetUrlRepository } from '../get-url/get-url.protocols';
 
 const makeUrlRepositoryStub = () => {
   class GetUrlRepositoryStub implements GetUrlRepository {
-    async getByCode(code: string): Promise<UrlShortenerModel> {
+    async getByCode(code: string): Promise<UrlShortenerModel | null> {
       return Promise.resolve({
         id: 'valid_id',
         original: 'valid_original_url',
@@ -53,8 +53,19 @@ describe('GetUrl Usecase', () => {
     const url = await sut.run(code);
 
     expect(url).toBeTruthy();
-    expect(url.id).toBeTruthy();
-    expect(url.original).toBe('valid_original_url');
-    expect(url.shortened).toBe('valid_shortened_url');
+    expect(url?.id).toBeTruthy();
+    expect(url?.original).toBe('valid_original_url');
+    expect(url?.shortened).toBe('valid_shortened_url');
+  });
+
+  test('Should return null if urlRepository.getByCode return null', async () => {
+    const { sut, getUrlRepositoryStub } = makeSut();
+    jest.spyOn(getUrlRepositoryStub, 'getByCode').mockImplementationOnce(() => {
+      return Promise.resolve(null);
+    });
+    const code = 'valid_code';
+    const url = await sut.run(code);
+
+    expect(url).toBe(null);
   });
 });
