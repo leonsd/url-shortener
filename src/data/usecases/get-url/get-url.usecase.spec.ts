@@ -1,6 +1,6 @@
 import { GetUrlUseCase } from './get-url.usecase';
 import { UrlShortenerModel } from '../../../domain/models/url-shortener.model';
-import { GetUrlRepository } from '../get-url/get-url.protocols';
+import { GetUrlRepository } from './get-url.protocol';
 
 const makeUrlRepositoryStub = () => {
   class GetUrlRepositoryStub implements GetUrlRepository {
