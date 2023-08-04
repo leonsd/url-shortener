@@ -1,8 +1,8 @@
 import * as sut from './map.helper';
-import { UrlShortenerModel } from '../../../domain/models/url-shortener.model';
-import { env } from '../../../main/config/env.config';
+import { UrlShortenerModel } from '../../../../domain/models/url-shortener.model';
+import { env } from '../../../../main/config/env.config';
 
-jest.mock('../../../main/config/env.config', () => {
+jest.mock('../../../../main/config/env.config', () => {
   return {
     env: {
       port: Number(process.env.PORT) || 3000,
