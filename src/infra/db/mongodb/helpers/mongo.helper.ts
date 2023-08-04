@@ -1,10 +1,12 @@
-import { Collection, InsertOneResult, MongoClient } from 'mongodb';
+import { Collection, MongoClient } from 'mongodb';
 
 export const MongoHelper = {
   client: null as unknown as MongoClient,
+  uri: null as unknown as string,
 
   async connect(uri: string) {
-    this.client = await MongoClient.connect(uri);
+    this.uri = uri;
+    this.client = await MongoClient.connect(this.uri);
   },
 
   async disconnect() {
@@ -13,6 +15,10 @@ export const MongoHelper = {
   },
 
   async getCollection(collectionName: string): Promise<Collection> {
+    if (!this.client) {
+      await this.connect(this.uri);
+    }
+
     const collection: Collection = await this.client
       .db()
       .collection(collectionName);
