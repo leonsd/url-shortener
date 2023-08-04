@@ -15,6 +15,13 @@ export const created = <T>(data: T): HttpResponse<T> => {
   };
 };
 
+export const found = <T>(data: T): HttpResponse<T> => {
+  return {
+    statusCode: 302,
+    body: data,
+  };
+};
+
 export const badRequest = (error: Error): HttpResponse<Error> => {
   return {
     statusCode: 400,
