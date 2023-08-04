@@ -1,13 +1,22 @@
-import { GetUrl } from '../../domain/usecases/get-url.usecase';
-import { InvalidParamError, NotFoundError } from '../errors';
-import { badRequest, notFound, found, serverError } from '../helpers/http.helper';
-import { CodeValidator } from '../protocols/code-validator.protocol';
-import { Controller, HttpRequest, HttpResponse } from './shortener.protocol';
+import {
+  Controller,
+  CodeValidator,
+  HttpRequest,
+  HttpResponse,
+} from './redirect.protocol';
+import { InvalidParamError, NotFoundError } from '../../errors';
+import {
+  badRequest,
+  notFound,
+  found,
+  serverError,
+} from '../../helpers/http.helper';
+import { GetUrl } from '../../../domain/usecases/get-url.usecase';
 
-export class RedirectToOriginalUrlController implements Controller {
+export class RedirectController implements Controller {
   constructor(
     private readonly codeValidator: CodeValidator,
-    private readonly getUrl: GetUrl,
+    private readonly getUrlUseCase: GetUrl,
   ) {}
 
   async handle(httpRequest: HttpRequest): Promise<HttpResponse<string | Error>> {
@@ -19,7 +28,7 @@ export class RedirectToOriginalUrlController implements Controller {
         return badRequest(new InvalidParamError('code'));
       }
 
-      const url = await this.getUrl.run(code);
+      const url = await this.getUrlUseCase.run(code);
 
       if (!url) {
         return notFound(new NotFoundError('Url'));

@@ -6,9 +6,9 @@ import {
   ShortenedUrl,
   UrlValidator,
 } from './shortener.protocol';
-import { InvalidParamError, MissingParamError } from '../errors';
-import { UrlShortener } from '../../domain/usecases/url-shortener.usecase';
-import { badRequest, created, serverError } from '../helpers/http.helper';
+import { InvalidParamError, MissingParamError } from '../../errors';
+import { UrlShortener } from '../../../domain/usecases/url-shortener.usecase';
+import { badRequest, created, serverError } from '../../helpers/http.helper';
 
 export class ShortenerController implements Controller {
   constructor(

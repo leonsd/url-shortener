@@ -1,7 +1,7 @@
-import { UrlShortenerModel } from '../../domain/models/url-shortener.model';
-import { GetUrl } from '../../domain/usecases/get-url.usecase';
-import { CodeValidator } from '../protocols/code-validator.protocol';
-import { RedirectToOriginalUrlController } from './redirect-to-original-url.controller';
+import { UrlShortenerModel } from '../../../domain/models/url-shortener.model';
+import { GetUrl } from '../../../domain/usecases/get-url.usecase';
+import { CodeValidator } from '../../protocols/code-validator.protocol';
+import { RedirectController } from './redirect.controller';
 
 const makeCodeValidatorAdapterStub = (): CodeValidator => {
   class CodeValidatorAdapterStub implements CodeValidator {
@@ -28,7 +28,7 @@ const makeGetUrlStub = (): GetUrl => {
 };
 
 interface SutTypes {
-  sut: RedirectToOriginalUrlController;
+  sut: RedirectController;
   codeValidatorStub: CodeValidator;
   getUrlStub: GetUrl;
 }
@@ -36,7 +36,7 @@ interface SutTypes {
 const makeSut = (): SutTypes => {
   const codeValidatorStub = makeCodeValidatorAdapterStub();
   const getUrlStub = makeGetUrlStub();
-  const sut = new RedirectToOriginalUrlController(codeValidatorStub, getUrlStub);
+  const sut = new RedirectController(codeValidatorStub, getUrlStub);
 
   return {
     sut,
