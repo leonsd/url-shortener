@@ -104,7 +104,7 @@ describe('RedirectToOriginalUrl Controller', () => {
     expect(httpResponse.statusCode).toBe(500);
   });
 
-  test('Should return 200 if success', async () => {
+  test('Should return 302 if success', async () => {
     const { sut } = makeSut();
     const httpRequest = {
       params: {
@@ -113,6 +113,6 @@ describe('RedirectToOriginalUrl Controller', () => {
     };
     const httpResponse = await sut.handle(httpRequest);
 
-    expect(httpResponse.statusCode).toBe(200);
+    expect(httpResponse.statusCode).toBe(302);
   });
 });
