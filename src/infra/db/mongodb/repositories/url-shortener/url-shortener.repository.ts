@@ -4,12 +4,12 @@ import {
   UrlData,
 } from '../../../../../data/protocols/url-shortener-repository.protocol';
 import { UrlModel } from '../../../../../domain/models/url.model';
+import { UrlEntity } from '../../entities/url.entity';
 
 export class UrlShortenerMongoRepository implements CreateUrlShortenerRepository {
   async create(urlData: UrlData): Promise<UrlModel> {
-    const urlCollection = await MongoHelper.getCollection('urls');
-    await urlCollection.insertOne(urlData);
+    const entity = await UrlEntity.create(urlData);
 
-    return MongoHelper.map<UrlData>(urlData);
+    return MongoHelper.map<UrlData>(entity) as UrlModel;
   }
 }

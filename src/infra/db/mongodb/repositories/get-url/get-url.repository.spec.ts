@@ -1,4 +1,5 @@
 import { GetUrlMongoRepository } from './get-url.repository';
+import { UrlEntity } from '../../entities/url.entity';
 import { MongoHelper } from '../../helpers/mongo.helper';
 
 const makeSut = (): GetUrlMongoRepository => {
@@ -12,8 +13,7 @@ describe('GetUrl Repository', () => {
   });
 
   beforeEach(async () => {
-    const accountCollection = await MongoHelper.getCollection('urls');
-    await accountCollection.deleteMany({});
+    await UrlEntity.deleteMany({});
   });
 
   afterAll(async () => {
@@ -23,12 +23,12 @@ describe('GetUrl Repository', () => {
   test('Should get url with success', async () => {
     const sut = makeSut();
     const code = 'valid_shortened_url';
-    const collection = await MongoHelper.getCollection('urls');
-    await collection.insertOne({
+    await UrlEntity.create({
       original: 'valid_original_url',
       shortened: 'valid_shortened_url',
     });
     const url = await sut.getByCode(code);
+    console.log('Should get url with success', url);
 
     expect(url).toBeTruthy();
     expect(url?.id).toBeTruthy();

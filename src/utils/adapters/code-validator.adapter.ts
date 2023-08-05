@@ -3,6 +3,6 @@ import { CodeValidator } from '../../presentation/protocols/code-validator.proto
 
 export class CodeValidatorAdapter implements CodeValidator {
   isValid(code: string): boolean {
-    return validator.isAlphanumeric(code);
+    return validator.isLength(code, { min: 6, max: 6 });
   }
 }

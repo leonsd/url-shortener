@@ -4,6 +4,7 @@ import {
   CreateUrlShortenerRepository,
   UrlData,
 } from '../../../../../data/protocols/url-shortener-repository.protocol';
+import { UrlEntity } from '../../entities/url.entity';
 
 const makeSut = (): CreateUrlShortenerRepository => {
   return new UrlShortenerMongoRepository();
@@ -16,8 +17,7 @@ describe('UrlShortener Repository', () => {
   });
 
   beforeEach(async () => {
-    const accountCollection = await MongoHelper.getCollection('urls');
-    await accountCollection.deleteMany({});
+    await UrlEntity.deleteMany({});
   });
 
   afterAll(async () => {

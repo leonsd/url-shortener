@@ -2,6 +2,7 @@ import request from 'supertest';
 import app from '../config/app.config';
 import { env } from '../config/env.config';
 import { MongoHelper } from '../../infra/db/mongodb/helpers/mongo.helper';
+import { UrlEntity } from '../../infra/db/mongodb/entities/url.entity';
 
 describe('RedirectUrl Router', () => {
   beforeAll(async () => {
@@ -10,8 +11,7 @@ describe('RedirectUrl Router', () => {
   });
 
   beforeEach(async () => {
-    const urlCollection = await MongoHelper.getCollection('urls');
-    await urlCollection.deleteMany({});
+    await UrlEntity.deleteMany({});
   });
 
   afterAll(async () => {
@@ -34,8 +34,7 @@ describe('RedirectUrl Router', () => {
 
   test('Should return 302 if success', async () => {
     const code = 'I1QEC7';
-    const urlCollection = await MongoHelper.getCollection('urls');
-    await urlCollection.insertOne({
+    await UrlEntity.create({
       original: 'valid_original_url',
       shortened: code,
     });
