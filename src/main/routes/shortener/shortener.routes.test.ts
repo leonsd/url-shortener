@@ -1,8 +1,8 @@
 import request from 'supertest';
-import app from '../config/app.config';
-import { env } from '../config/env.config';
-import { MongoHelper } from '../../infra/db/mongodb/helpers/mongo.helper';
-import { UrlEntity } from '../../infra/db/mongodb/entities/url.entity';
+import app from '../../config/app.config';
+import { env } from '../../config/env.config';
+import { MongoHelper } from '../../../infra/db/mongodb/helpers/mongo.helper';
+import { UrlEntity } from '../../../infra/db/mongodb/entities/url.entity';
 
 describe('Url Router', () => {
   beforeAll(async () => {

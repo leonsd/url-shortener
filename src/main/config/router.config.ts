@@ -5,7 +5,7 @@ export default (app: Application) => {
   const router = Router();
   app.use(router);
 
-  fg.sync('**/src/main/routes/**.routes.ts').map(async (filePath) => {
+  fg.sync('**/src/main/routes/**/**.routes.ts').map(async (filePath) => {
     (await import(`../../../${filePath}`)).default(router);
   });
 };
