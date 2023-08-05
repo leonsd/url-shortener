@@ -1,4 +1,4 @@
-export interface UrlShortenerModel {
+export interface UrlModel {
   id: string;
   original: string;
   shortened: string;

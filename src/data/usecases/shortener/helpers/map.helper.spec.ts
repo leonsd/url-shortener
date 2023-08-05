@@ -1,5 +1,5 @@
 import * as sut from './map.helper';
-import { UrlShortenerModel } from '../../../../domain/models/url-shortener.model';
+import { UrlModel } from '../../../../domain/models/url.model';
 import { env } from '../../../../main/config/env.config';
 
 jest.mock('../../../../main/config/env.config', () => {
@@ -14,7 +14,7 @@ jest.mock('../../../../main/config/env.config', () => {
 describe('Map Helper', () => {
   test('Should return shortened with domain', async () => {
     env.port = null;
-    const url: UrlShortenerModel = {
+    const url: UrlModel = {
       id: 'valid_id',
       original: 'original_url',
       shortened: 'shortened_url',
@@ -29,7 +29,7 @@ describe('Map Helper', () => {
 
   test('Should return shortened with domain and port', async () => {
     env.port = 3000;
-    const url: UrlShortenerModel = {
+    const url: UrlModel = {
       id: 'valid_id',
       original: 'original_url',
       shortened: 'shortened_url',

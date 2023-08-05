@@ -1,7 +1,7 @@
-import { UrlShortenerModel } from '../url-shortener.protocol';
+import { UrlModel } from '../url-shortener.protocol';
 import { env } from '../../../../main/config/env.config';
 
-export const mapper = (url: UrlShortenerModel): UrlShortenerModel => {
+export const mapper = (url: UrlModel): UrlModel => {
   const port = env.port ? `:${env.port}` : '';
   const shortened = `${env.domain}${port}/${url.shortened}`;
 

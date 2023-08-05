@@ -1,6 +1,6 @@
 import { ShortenerController } from './shortener.controller';
 import { UrlValidator } from './shortener.protocol';
-import { UrlShortenerModel } from '../../../domain/models/url-shortener.model';
+import { UrlModel } from '../../../domain/models/url.model';
 import { UrlShortener } from '../../../domain/usecases/url-shortener.usecase';
 import { InvalidParamError, MissingParamError, ServerError } from '../../errors';
 
@@ -16,7 +16,7 @@ const makeUrlValidatorAdapterStub = (): UrlValidator => {
 
 const makeUrlShortenerStub = (): UrlShortener => {
   class UrlShortenerStub implements UrlShortener {
-    run(url: string): Promise<UrlShortenerModel> {
+    run(url: string): Promise<UrlModel> {
       return Promise.resolve({
         id: 'valid_id',
         original: 'original_url',

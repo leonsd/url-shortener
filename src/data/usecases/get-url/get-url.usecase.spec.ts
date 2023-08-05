@@ -1,10 +1,10 @@
 import { GetUrlUseCase } from './get-url.usecase';
-import { UrlShortenerModel } from '../../../domain/models/url-shortener.model';
+import { UrlModel } from '../../../domain/models/url.model';
 import { GetUrlRepository } from './get-url.protocol';
 
 const makeUrlRepositoryStub = () => {
   class GetUrlRepositoryStub implements GetUrlRepository {
-    async getByCode(code: string): Promise<UrlShortenerModel | null> {
+    async getByCode(code: string): Promise<UrlModel | null> {
       return Promise.resolve({
         id: 'valid_id',
         original: 'valid_original_url',
@@ -47,7 +47,7 @@ describe('GetUrl Usecase', () => {
     expect(promise).rejects.toThrow();
   });
 
-  test('Should return UrlShortenerModel if success', async () => {
+  test('Should return UrlModel if success', async () => {
     const { sut } = makeSut();
     const code = 'valid_code';
     const url = await sut.run(code);

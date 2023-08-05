@@ -1,6 +1,6 @@
 import {
   UrlShortener,
-  UrlShortenerModel,
+  UrlModel,
   Shortener,
   CreateUrlShortenerRepository,
 } from './url-shortener.protocol';
@@ -12,7 +12,7 @@ export class CreateShortenedUrl implements UrlShortener {
     private readonly urlShortenerRepository: CreateUrlShortenerRepository,
   ) {}
 
-  async run(originalUrl: string): Promise<UrlShortenerModel> {
+  async run(originalUrl: string): Promise<UrlModel> {
     const size = 6;
     const shortened = this.shortener.shorten(size);
     const urlData = {

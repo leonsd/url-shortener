@@ -1,5 +1,5 @@
-import { UrlShortenerModel } from '../models/url-shortener.model';
+import { UrlModel } from '../models/url.model';
 
 export interface GetUrl {
-  run(code: string): Promise<UrlShortenerModel | null>;
+  run(code: string): Promise<UrlModel | null>;
 }

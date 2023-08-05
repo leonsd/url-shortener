@@ -1,4 +1,4 @@
-import { UrlShortenerModel } from '../../domain/models/url-shortener.model';
+import { UrlModel } from '../../domain/models/url.model';
 
 export interface UrlData {
   original: string;
@@ -6,5 +6,5 @@ export interface UrlData {
 }
 
 export interface CreateUrlShortenerRepository {
-  create(urlData: UrlData): Promise<UrlShortenerModel>;
+  create(urlData: UrlData): Promise<UrlModel>;
 }

@@ -3,10 +3,10 @@ import {
   CreateUrlShortenerRepository,
   UrlData,
 } from '../../../../../data/protocols/url-shortener-repository.protocol';
-import { UrlShortenerModel } from '../../../../../domain/models/url-shortener.model';
+import { UrlModel } from '../../../../../domain/models/url.model';
 
 export class UrlShortenerMongoRepository implements CreateUrlShortenerRepository {
-  async create(urlData: UrlData): Promise<UrlShortenerModel> {
+  async create(urlData: UrlData): Promise<UrlModel> {
     const urlCollection = await MongoHelper.getCollection('urls');
     await urlCollection.insertOne(urlData);
 

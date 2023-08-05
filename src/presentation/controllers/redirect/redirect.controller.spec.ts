@@ -1,4 +1,4 @@
-import { UrlShortenerModel } from '../../../domain/models/url-shortener.model';
+import { UrlModel } from '../../../domain/models/url.model';
 import { GetUrl } from '../../../domain/usecases/get-url.usecase';
 import { CodeValidator } from '../../protocols/code-validator.protocol';
 import { RedirectController } from './redirect.controller';
@@ -15,7 +15,7 @@ const makeCodeValidatorAdapterStub = (): CodeValidator => {
 
 const makeGetUrlStub = (): GetUrl => {
   class GetUrlStub implements GetUrl {
-    run(code: string): Promise<UrlShortenerModel> {
+    run(code: string): Promise<UrlModel> {
       return Promise.resolve({
         id: 'valid_id',
         original: 'valid_original',

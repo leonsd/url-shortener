@@ -4,7 +4,7 @@ import {
   UrlShortener,
   CreateUrlShortenerRepository,
   UrlData,
-  UrlShortenerModel,
+  UrlModel,
 } from './url-shortener.protocol';
 
 jest.mock('nanoid', () => {
@@ -25,7 +25,7 @@ const makeUrlShortenerStub = (): Shortener => {
 
 const makeUrlShortenerRepositoryStub = (): CreateUrlShortenerRepository => {
   class UrlShortenerRepositoryStub implements CreateUrlShortenerRepository {
-    create(urlData: UrlData): Promise<UrlShortenerModel> {
+    create(urlData: UrlData): Promise<UrlModel> {
       return Promise.resolve({
         id: 'valid_id',
         original: 'original_id',
