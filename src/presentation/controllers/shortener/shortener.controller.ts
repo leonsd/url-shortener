@@ -2,7 +2,7 @@ import {
   Controller,
   HttpRequest,
   HttpResponse,
-  ShortenerDto,
+  ShortenerBodyDto,
   ShortenedUrl,
   UrlValidator,
 } from './shortener.protocol';
@@ -17,7 +17,7 @@ export class ShortenerController implements Controller {
   ) {}
 
   async handle(
-    httpRequest: HttpRequest<ShortenerDto>,
+    httpRequest: HttpRequest<ShortenerBodyDto>,
   ): Promise<HttpResponse<ShortenedUrl | Error>> {
     try {
       const url = httpRequest.body?.url ?? '';

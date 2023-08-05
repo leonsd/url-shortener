@@ -1,4 +1,4 @@
-export interface ShortenerDto {
+export interface ShortenerBodyDto {
   url: string;
 }
 

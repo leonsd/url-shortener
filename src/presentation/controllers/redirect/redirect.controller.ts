@@ -3,6 +3,7 @@ import {
   CodeValidator,
   HttpRequest,
   HttpResponse,
+  RedirectParamsDto,
 } from './redirect.protocol';
 import { InvalidParamError, NotFoundError } from '../../errors';
 import {
@@ -19,9 +20,11 @@ export class RedirectController implements Controller {
     private readonly getUrlUseCase: GetUrl,
   ) {}
 
-  async handle(httpRequest: HttpRequest): Promise<HttpResponse<string | Error>> {
+  async handle(
+    httpRequest: HttpRequest<unknown, RedirectParamsDto>,
+  ): Promise<HttpResponse<string | Error>> {
     try {
-      const { code } = httpRequest.params;
+      const code = httpRequest.params?.code as string;
       const isValid = this.codeValidator.isValid(code);
 
       if (!isValid) {
