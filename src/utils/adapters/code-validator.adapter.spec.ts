@@ -3,7 +3,7 @@ import { CodeValidatorAdapter } from './code-validator.adapter';
 
 jest.mock('validator', () => {
   return {
-    isAlphanumeric: () => true,
+    isLength: () => true,
   };
 });
 
@@ -22,21 +22,22 @@ describe('CodeValidator Adapter', () => {
 
   test('Should return false if code is invalid', () => {
     const sut = makeSut();
-    jest.spyOn(validator, 'isAlphanumeric').mockReturnValueOnce(false);
+    jest.spyOn(validator, 'isLength').mockReturnValueOnce(false);
     const code = '123456';
     const isValid = sut.isValid(code);
 
     expect(isValid).toBe(false);
   });
 
-  test('Should calls validator.isAlphanumeric with correct value', () => {
+  test('Should calls validator.isLength with correct value', () => {
     const sut = makeSut();
-    const isAlphanumericSpy = jest
-      .spyOn(validator, 'isAlphanumeric')
+    const isLengthSpy = jest
+      .spyOn(validator, 'isLength')
       .mockReturnValueOnce(false);
     const code = 'L6lVAf';
+    const options = { min: 6, max: 6 };
     sut.isValid(code);
 
-    expect(isAlphanumericSpy).toHaveBeenCalledWith(code);
+    expect(isLengthSpy).toHaveBeenCalledWith(code, options);
   });
 });
