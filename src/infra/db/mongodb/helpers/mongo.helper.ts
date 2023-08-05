@@ -1,11 +1,4 @@
-import {
-  Collection,
-  Document,
-  FlattenMaps,
-  Require_id,
-  Types,
-  connect,
-} from 'mongoose';
+import { Document, FlattenMaps, Require_id, Types, connect } from 'mongoose';
 
 type MongooseEntity<T> =
   | (Document<unknown, object, T> & T & { _id: Types.ObjectId })
@@ -23,18 +16,6 @@ export const MongoHelper = {
   async disconnect() {
     await this.client.connection.close();
     this.client = null;
-  },
-
-  async getCollection(collectionName: string): Promise<Collection> {
-    if (!this.client) {
-      await this.connect(this.uri);
-    }
-
-    const collection: Collection = await this.client
-      .db()
-      .collection(collectionName);
-
-    return collection;
   },
 
   map<T>(
