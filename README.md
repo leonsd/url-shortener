@@ -1,13 +1,10 @@
-# Express Template
-
-Express template
+# Shortener url
+Encurtador de url
 
 ## Requisitos
 
 ```
-Node: 18.17.x
-npm: 9.5.x
-Mysql: 8.x
+docker e docker compose
 ```
 
 ## Uso
@@ -18,21 +15,12 @@ Mysql: 8.x
 $ npm i
 ```
 
-### Executar migrations
-
-Executar o comando a seguir para criação das tabelas do banco de dados.
-
-```bash
-$ npm run migrate
-```
-
 ### Desenvolvimento local
 
 Para iniciar a api basta utilizar o comando a seguir:
 
 ```bash
-$ npm run build
-$ npm run dev
+$ docker compose up
 ```
 
 ### Testes
@@ -40,7 +28,8 @@ $ npm run dev
 Para executar os testes automatizados utilizar um dos seguintes comandos:
 
 ```bash
-$ npm test
-$ npm run test:watch
-$ npm run test:watchAll
+$ npm test # executa todos os testes
+$ npm run test:unit # executa os testes unitários
+$ npm run test:integration # executa os testes de integração
+$ npm run test:ci # executa todos os testes e exibe a cobertura de teste
 ```
