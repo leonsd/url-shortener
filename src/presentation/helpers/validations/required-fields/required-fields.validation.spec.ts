@@ -1,4 +1,4 @@
-import { RequiredFieldsValidator } from './required-fields.validator';
+import { RequiredFieldsValidator } from './required-fields.validation';
 import { Validation } from '../../../protocols/validation.protocol';
 import { MissingParamError } from '../../../errors';
 
