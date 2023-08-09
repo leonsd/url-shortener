@@ -2,34 +2,28 @@ import {
   Controller,
   HttpRequest,
   HttpResponse,
-  ShortenerBodyDto,
   ShortenedUrl,
-  UrlValidator,
 } from './shortener.protocol';
-import { InvalidParamError, MissingParamError } from '../../errors';
 import { UrlShortener } from '../../../domain/usecases/url-shortener.usecase';
 import { badRequest, created, serverError } from '../../helpers/http/http.helper';
+import { Validation } from '../../protocols/validation.protocol';
 
 export class ShortenerController implements Controller {
   constructor(
-    private readonly urlValidator: UrlValidator,
+    private readonly validation: Validation,
     private readonly createShortenedUrl: UrlShortener,
   ) {}
 
   async handle(
-    httpRequest: HttpRequest<ShortenerBodyDto>,
+    httpRequest: HttpRequest,
   ): Promise<HttpResponse<ShortenedUrl | Error>> {
     try {
-      const url = httpRequest.body?.url ?? '';
-      if (!url) {
-        return badRequest(new MissingParamError('url'));
+      const error = this.validation.validate(httpRequest.body);
+      if (error) {
+        return badRequest(error);
       }
 
-      const isValid = this.urlValidator.isValid(url);
-      if (!isValid) {
-        return badRequest(new InvalidParamError('url'));
-      }
-
+      const { url } = httpRequest.body;
       const { shortened } = await this.createShortenedUrl.run(url);
 
       return created<ShortenedUrl>({ shortenedUrl: shortened });

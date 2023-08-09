@@ -18,6 +18,18 @@ describe('Url Router', () => {
     await MongoHelper.disconnect();
   });
 
+  test('Should return 400 if url is no provided', async () => {
+    const response = await request(app).post('/shortener').send({});
+    expect(response.status).toBe(400);
+  });
+
+  test('Should return 400 if invalid url is provided', async () => {
+    const response = await request(app).post('/shortener').send({
+      url: 'invalid_url',
+    });
+    expect(response.status).toBe(400);
+  });
+
   test('Should return an shortened url on success', async () => {
     const response = await request(app).post('/shortener').send({
       url: 'http://any-url.com.br',

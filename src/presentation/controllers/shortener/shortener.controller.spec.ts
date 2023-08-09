@@ -1,17 +1,15 @@
 import { ShortenerController } from './shortener.controller';
-import { UrlValidator } from './shortener.protocol';
 import { UrlModel } from '../../../domain/models/url.model';
 import { UrlShortener } from '../../../domain/usecases/url-shortener.usecase';
 import { InvalidParamError, MissingParamError, ServerError } from '../../errors';
+import { GenericObject, Validation } from '../../protocols/validation.protocol';
 
-const makeUrlValidatorAdapterStub = (): UrlValidator => {
-  class UrlValidatorAdapterStub implements UrlValidator {
-    isValid(url: string): boolean {
-      return true;
-    }
+const makeValidation = (): Validation => {
+  class ValidationStub implements Validation {
+    validate(input: GenericObject): void | Error {}
   }
 
-  return new UrlValidatorAdapterStub();
+  return new ValidationStub();
 };
 
 const makeUrlShortenerStub = (): UrlShortener => {
@@ -30,57 +28,54 @@ const makeUrlShortenerStub = (): UrlShortener => {
 
 interface SutTypes {
   sut: ShortenerController;
-  urlValidatorAdapterStub: UrlValidator;
+  validationStub: Validation;
   urlShortenerStub: UrlShortener;
 }
 
 const makeSut = (): SutTypes => {
-  const urlValidatorAdapterStub = makeUrlValidatorAdapterStub();
+  const validationStub = makeValidation();
   const urlShortenerStub = makeUrlShortenerStub();
-  const sut = new ShortenerController(urlValidatorAdapterStub, urlShortenerStub);
+  const sut = new ShortenerController(validationStub, urlShortenerStub);
 
   return {
     sut,
-    urlValidatorAdapterStub,
+    validationStub,
     urlShortenerStub,
   };
 };
 
 describe('Shortener Controller', () => {
   test('Should return 400 if no url is provided', async () => {
-    const { sut } = makeSut();
+    const { sut, validationStub } = makeSut();
+    jest.spyOn(validationStub, 'validate').mockReturnValueOnce(new Error());
     const httpRequest = {
-      body: {
-        url: '',
-      },
+      body: { url: '' },
     };
-    const httpResponse = await sut.handle(httpRequest);
 
+    const httpResponse = await sut.handle(httpRequest);
     expect(httpResponse.statusCode).toBe(400);
-    expect(httpResponse.body).toEqual(new MissingParamError('url'));
   });
 
   test('Should return 400 if no body is provided', async () => {
-    const { sut } = makeSut();
+    const { sut, validationStub } = makeSut();
+    jest.spyOn(validationStub, 'validate').mockReturnValueOnce(new Error());
     const httpRequest = {};
-    const httpResponse = await sut.handle(httpRequest);
 
+    const httpResponse = await sut.handle(httpRequest);
     expect(httpResponse.statusCode).toBe(400);
-    expect(httpResponse.body).toEqual(new MissingParamError('url'));
   });
 
   test('Should return 400 if invalid url', async () => {
-    const { sut, urlValidatorAdapterStub } = makeSut();
-    jest.spyOn(urlValidatorAdapterStub, 'isValid').mockReturnValueOnce(false);
+    const { sut, validationStub } = makeSut();
+    jest.spyOn(validationStub, 'validate').mockReturnValueOnce(new Error());
     const httpRequest = {
       body: {
         url: 'invalid_url',
       },
     };
-    const httpResponse = await sut.handle(httpRequest);
 
+    const httpResponse = await sut.handle(httpRequest);
     expect(httpResponse.statusCode).toBe(400);
-    expect(httpResponse.body).toEqual(new InvalidParamError('url'));
   });
 
   test('Should call urlShortener.run with correct value', async () => {
@@ -91,8 +86,8 @@ describe('Shortener Controller', () => {
         url: 'valid_url',
       },
     };
-    await sut.handle(httpRequest);
 
+    await sut.handle(httpRequest);
     expect(runSpy).toHaveBeenCalledWith(httpRequest.body.url);
   });
 
@@ -106,8 +101,8 @@ describe('Shortener Controller', () => {
         url: 'valid_url',
       },
     };
-    const httpResponse = await sut.handle(httpRequest);
 
+    const httpResponse = await sut.handle(httpRequest);
     expect(httpResponse.statusCode).toBe(500);
     expect(httpResponse.body).toEqual(new ServerError());
   });
@@ -119,8 +114,8 @@ describe('Shortener Controller', () => {
         url: 'valid_url',
       },
     };
-    const httpResponse = await sut.handle(httpRequest);
 
+    const httpResponse = await sut.handle(httpRequest);
     expect(httpResponse.statusCode).toBe(201);
     expect(httpResponse.body).toEqual({
       shortenedUrl: 'shortened_url',

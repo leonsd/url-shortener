@@ -20,15 +20,15 @@ describe('RedirectUrl Router', () => {
 
   test('Should return 400 if invalid code', async () => {
     const code = 'invalid_code';
-    const response = await request(app).get(`/${code}`);
 
+    const response = await request(app).get(`/${code}`);
     expect(response.status).toBe(400);
   });
 
   test('Should return 404 if url not found', async () => {
     const code = 'I1QEC7';
-    const response = await request(app).get(`/${code}`);
 
+    const response = await request(app).get(`/${code}`);
     expect(response.status).toBe(404);
   });
 
@@ -40,7 +40,6 @@ describe('RedirectUrl Router', () => {
     });
 
     const response = await request(app).get(`/${code}`);
-
     expect(response.status).toBe(302);
   });
 });
