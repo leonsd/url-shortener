@@ -1,6 +1,6 @@
 import { UrlModel } from '../../../domain/models/url.model';
 import { GetUrl } from '../../../domain/usecases/get-url.usecase';
-import { GenericObject, Validation } from '../../protocols/validation.protocol';
+import { GenericObject, Validation } from './redirect.protocol';
 import { RedirectController } from './redirect.controller';
 
 const makeValidation = (): Validation => {

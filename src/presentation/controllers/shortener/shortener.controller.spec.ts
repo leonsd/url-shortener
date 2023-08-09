@@ -1,8 +1,8 @@
 import { ShortenerController } from './shortener.controller';
+import { GenericObject, Validation } from './shortener.protocol';
 import { UrlModel } from '../../../domain/models/url.model';
 import { UrlShortener } from '../../../domain/usecases/url-shortener.usecase';
 import { ServerError } from '../../errors';
-import { GenericObject, Validation } from '../../protocols/validation.protocol';
 
 const makeValidation = (): Validation => {
   class ValidationStub implements Validation {

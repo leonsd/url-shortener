@@ -3,10 +3,10 @@ import {
   HttpRequest,
   HttpResponse,
   ShortenedUrl,
+  Validation,
 } from './shortener.protocol';
 import { UrlShortener } from '../../../domain/usecases/url-shortener.usecase';
 import { badRequest, created, serverError } from '../../helpers/http/http.helper';
-import { Validation } from '../../protocols/validation.protocol';
 
 export class ShortenerController implements Controller {
   constructor(
