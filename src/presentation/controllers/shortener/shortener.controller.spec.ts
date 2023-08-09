@@ -1,7 +1,7 @@
 import { ShortenerController } from './shortener.controller';
 import { UrlModel } from '../../../domain/models/url.model';
 import { UrlShortener } from '../../../domain/usecases/url-shortener.usecase';
-import { InvalidParamError, MissingParamError, ServerError } from '../../errors';
+import { ServerError } from '../../errors';
 import { GenericObject, Validation } from '../../protocols/validation.protocol';
 
 const makeValidation = (): Validation => {

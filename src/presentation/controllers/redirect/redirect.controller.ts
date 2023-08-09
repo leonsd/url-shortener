@@ -1,11 +1,5 @@
-import {
-  Controller,
-  CodeValidator,
-  HttpRequest,
-  HttpResponse,
-  RedirectParamsDto,
-} from './redirect.protocol';
-import { InvalidParamError, NotFoundError } from '../../errors';
+import { Controller, HttpRequest, HttpResponse } from './redirect.protocol';
+import { NotFoundError } from '../../errors';
 import {
   badRequest,
   notFound,
@@ -13,26 +7,23 @@ import {
   serverError,
 } from '../../helpers/http/http.helper';
 import { GetUrl } from '../../../domain/usecases/get-url.usecase';
+import { Validation } from '../../protocols/validation.protocol';
 
 export class RedirectController implements Controller {
   constructor(
-    private readonly codeValidator: CodeValidator,
+    private readonly validator: Validation,
     private readonly getUrlUseCase: GetUrl,
   ) {}
 
-  async handle(
-    httpRequest: HttpRequest<unknown, RedirectParamsDto>,
-  ): Promise<HttpResponse<string | Error>> {
+  async handle(httpRequest: HttpRequest): Promise<HttpResponse<string | Error>> {
     try {
       const code = httpRequest.params?.code as string;
-      const isValid = this.codeValidator.isValid(code);
-
-      if (!isValid) {
-        return badRequest(new InvalidParamError('code'));
+      const error = this.validator.validate(httpRequest.params);
+      if (error) {
+        return badRequest(error);
       }
 
       const url = await this.getUrlUseCase.run(code);
-
       if (!url) {
         return notFound(new NotFoundError('Url'));
       }

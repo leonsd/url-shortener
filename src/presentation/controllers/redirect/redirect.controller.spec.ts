@@ -1,16 +1,14 @@
 import { UrlModel } from '../../../domain/models/url.model';
 import { GetUrl } from '../../../domain/usecases/get-url.usecase';
-import { CodeValidator } from '../../protocols/code-validator.protocol';
+import { GenericObject, Validation } from '../../protocols/validation.protocol';
 import { RedirectController } from './redirect.controller';
 
-const makeCodeValidatorAdapterStub = (): CodeValidator => {
-  class CodeValidatorAdapterStub implements CodeValidator {
-    isValid(code: string): boolean {
-      return true;
-    }
+const makeValidation = (): Validation => {
+  class ValidationStub implements Validation {
+    validate(input: GenericObject): void | Error {}
   }
 
-  return new CodeValidatorAdapterStub();
+  return new ValidationStub();
 };
 
 const makeGetUrlStub = (): GetUrl => {
@@ -29,33 +27,33 @@ const makeGetUrlStub = (): GetUrl => {
 
 interface SutTypes {
   sut: RedirectController;
-  codeValidatorStub: CodeValidator;
+  validatorStub: Validation;
   getUrlStub: GetUrl;
 }
 
 const makeSut = (): SutTypes => {
-  const codeValidatorStub = makeCodeValidatorAdapterStub();
+  const validatorStub = makeValidation();
   const getUrlStub = makeGetUrlStub();
-  const sut = new RedirectController(codeValidatorStub, getUrlStub);
+  const sut = new RedirectController(validatorStub, getUrlStub);
 
   return {
     sut,
-    codeValidatorStub,
+    validatorStub,
     getUrlStub,
   };
 };
 
 describe('RedirectToOriginalUrl Controller', () => {
   test('Should return 400 if incorrect path param', async () => {
-    const { sut, codeValidatorStub } = makeSut();
-    jest.spyOn(codeValidatorStub, 'isValid').mockReturnValueOnce(false);
+    const { sut, validatorStub } = makeSut();
+    jest.spyOn(validatorStub, 'validate').mockReturnValueOnce(new Error());
     const httpRequest = {
       params: {
         code: 'invalid_code',
       },
     };
-    const httpResponse = await sut.handle(httpRequest);
 
+    const httpResponse = await sut.handle(httpRequest);
     expect(httpResponse.statusCode).toBe(400);
   });
 
@@ -69,14 +67,14 @@ describe('RedirectToOriginalUrl Controller', () => {
         code: 'valid_code',
       },
     };
-    const httpResponse = await sut.handle(httpRequest);
 
+    const httpResponse = await sut.handle(httpRequest);
     expect(httpResponse.statusCode).toBe(404);
   });
 
   test('Should return 500 if code validator throws', async () => {
-    const { sut, codeValidatorStub } = makeSut();
-    jest.spyOn(codeValidatorStub, 'isValid').mockImplementationOnce(() => {
+    const { sut, validatorStub } = makeSut();
+    jest.spyOn(validatorStub, 'validate').mockImplementationOnce(() => {
       throw new Error();
     });
     const httpRequest = {
@@ -84,8 +82,8 @@ describe('RedirectToOriginalUrl Controller', () => {
         code: 'invalid_code',
       },
     };
-    const httpResponse = await sut.handle(httpRequest);
 
+    const httpResponse = await sut.handle(httpRequest);
     expect(httpResponse.statusCode).toBe(500);
   });
 
@@ -99,8 +97,8 @@ describe('RedirectToOriginalUrl Controller', () => {
         code: 'valid_code',
       },
     };
-    const httpResponse = await sut.handle(httpRequest);
 
+    const httpResponse = await sut.handle(httpRequest);
     expect(httpResponse.statusCode).toBe(500);
   });
 
@@ -111,8 +109,8 @@ describe('RedirectToOriginalUrl Controller', () => {
         code: 'valid_code',
       },
     };
-    const httpResponse = await sut.handle(httpRequest);
 
+    const httpResponse = await sut.handle(httpRequest);
     expect(httpResponse.statusCode).toBe(302);
   });
 });
