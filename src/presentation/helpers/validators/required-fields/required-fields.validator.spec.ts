@@ -1,5 +1,5 @@
 import { RequiredFieldsValidator } from './required-fields.validator';
-import { Validator } from '../../../protocols/validator.protocol';
+import { Validation } from '../../../protocols/validation.protocol';
 import { MissingParamError } from '../../../errors';
 
 const makeFakeObject = () => {
@@ -8,7 +8,7 @@ const makeFakeObject = () => {
   };
 };
 
-const makeSut = (): Validator => {
+const makeSut = (): Validation => {
   return new RequiredFieldsValidator('url');
 };
 

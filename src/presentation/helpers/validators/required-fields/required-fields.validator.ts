@@ -1,7 +1,10 @@
 import { MissingParamError } from '../../../errors';
-import { GenericObject, Validator } from '../../../protocols/validator.protocol';
+import {
+  GenericObject,
+  Validation,
+} from '../../../protocols/validation.protocol';
 
-export class RequiredFieldsValidator implements Validator {
+export class RequiredFieldsValidator implements Validation {
   constructor(private readonly fieldName: string) {}
 
   validate(input: GenericObject): void | Error {
