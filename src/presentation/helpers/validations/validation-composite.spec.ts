@@ -1,5 +1,6 @@
 import { ValidationComposite } from './validation-composite';
 import { GenericObject, Validation } from '../../protocols/validation.protocol';
+import { InvalidParamError, MissingParamError } from '../../errors';
 
 const makeFakeObject = () => {
   return {
@@ -42,5 +43,27 @@ describe('Validation Composite', () => {
     jest.spyOn(validationStubs[1], 'validate').mockReturnValueOnce(new Error());
     const errorLastValidation = sut.validate(input);
     expect(errorLastValidation).toBeTruthy();
+  });
+
+  test('Should return the first error if more the one validation fails', async () => {
+    const { sut, validationStubs } = makeSut();
+    const input = makeFakeObject();
+    jest
+      .spyOn(validationStubs[0], 'validate')
+      .mockReturnValueOnce(new InvalidParamError('any_param'));
+    jest
+      .spyOn(validationStubs[1], 'validate')
+      .mockReturnValueOnce(new MissingParamError('any_param'));
+
+    const error = sut.validate(input);
+    expect(error).toEqual(new InvalidParamError('any_param'));
+  });
+
+  test('Should return void if all validations succeeds', async () => {
+    const { sut } = makeSut();
+    const input = makeFakeObject();
+
+    const error = sut.validate(input);
+    expect(error).toBeFalsy();
   });
 });
