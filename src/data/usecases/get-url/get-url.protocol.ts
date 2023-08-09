@@ -1,1 +1,1 @@
-export * from '../../protocols/get-url-repository.protocol';
+export * from '../../protocols/db/get-url-repository.protocol';

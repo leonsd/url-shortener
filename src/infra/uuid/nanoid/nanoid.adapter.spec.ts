@@ -1,7 +1,7 @@
 import * as nanoidModule from 'nanoid';
 
-import { ShortenerAdapter } from './shortener.adapter';
-import { Shortener } from '../../data/protocols/shortener.protocol';
+import { NanoidAdapter } from './nanoid.adapter';
+import { Shortener } from '../../../data/protocols/uuid/shortener.protocol';
 
 jest.mock('nanoid', () => {
   return {
@@ -11,7 +11,7 @@ jest.mock('nanoid', () => {
 });
 
 const makeSut = (): Shortener => {
-  return new ShortenerAdapter();
+  return new NanoidAdapter();
 };
 
 describe('Shortener Adapter', () => {

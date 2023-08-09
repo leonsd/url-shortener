@@ -1,4 +1,4 @@
-import { UrlModel } from '../../domain/models/url.model';
+import { UrlModel } from '../../../domain/models/url.model';
 
 export interface UrlData {
   original: string;

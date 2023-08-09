@@ -3,7 +3,7 @@ import { MongoHelper } from '../../helpers/mongo.helper';
 import {
   CreateUrlShortenerRepository,
   UrlData,
-} from '../../../../../data/protocols/url-shortener-repository.protocol';
+} from '../../../../../data/protocols/db/url-shortener-repository.protocol';
 import { UrlEntity } from '../../entities/url.entity';
 
 const makeSut = (): CreateUrlShortenerRepository => {

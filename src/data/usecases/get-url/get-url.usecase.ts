@@ -1,5 +1,5 @@
 import { GetUrl } from '../../../domain/usecases/get-url.usecase';
-import { GetUrlRepository } from '../../protocols/get-url-repository.protocol';
+import { GetUrlRepository } from '../../protocols/db/get-url-repository.protocol';
 import { UrlModel } from '../shortener/url-shortener.protocol';
 
 export class GetUrlUseCase implements GetUrl {
