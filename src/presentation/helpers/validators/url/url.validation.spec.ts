@@ -51,4 +51,12 @@ describe('Url Validation', () => {
     const error = sut.validate(input);
     expect(error).toEqual(new InvalidParamError('url'));
   });
+
+  test('Should return void if validation succeeds', async () => {
+    const { sut } = makeSut();
+    const input = makeFakeObject();
+
+    const error = sut.validate(input);
+    expect(error).toBeFalsy();
+  });
 });
