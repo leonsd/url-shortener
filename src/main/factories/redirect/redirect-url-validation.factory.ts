@@ -2,7 +2,7 @@ import { RequiredFieldsValidation } from '../../../presentation/helpers/validati
 import { CodeValidation } from '../../../presentation/helpers/validations/code/code.validation';
 import { ValidationComposite } from '../../../presentation/helpers/validations/validation-composite';
 import { Validation } from '../../../presentation/protocols/validation.protocol';
-import { CodeValidatorAdapter } from '../../../utils/adapters/code-validator/code-validator.adapter';
+import { CodeValidatorAdapter } from '../../adapters/code-validator/code-validator.adapter';
 
 export const makeRedirectValidator = (): Validation => {
   const validations: Validation[] = [];

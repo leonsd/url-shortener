@@ -2,7 +2,7 @@ import { RequiredFieldsValidation } from '../../../presentation/helpers/validati
 import { UrlValidation } from '../../../presentation/helpers/validations/url/url.validation';
 import { ValidationComposite } from '../../../presentation/helpers/validations/validation-composite';
 import { Validation } from '../../../presentation/protocols/validation.protocol';
-import { UrlValidatorAdapter } from '../../../utils/adapters/url-validator/url-validator.adapter';
+import { UrlValidatorAdapter } from '../../adapters/url-validator/url-validator.adapter';
 
 export const makeShortenerValidator = (): Validation => {
   const validations: Validation[] = [];
