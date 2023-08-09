@@ -1,4 +1,4 @@
-import { RequiredFieldsValidator } from './required-fields.validation';
+import { RequiredFieldsValidation } from './required-fields.validation';
 import { Validation } from '../../../protocols/validation.protocol';
 import { MissingParamError } from '../../../errors';
 
@@ -9,7 +9,7 @@ const makeFakeObject = () => {
 };
 
 const makeSut = (): Validation => {
-  return new RequiredFieldsValidator('url');
+  return new RequiredFieldsValidation('url');
 };
 
 describe('RequiredFields Validator', () => {

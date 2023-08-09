@@ -4,7 +4,7 @@ import {
   Validation,
 } from '../../../protocols/validation.protocol';
 
-export class RequiredFieldsValidator implements Validation {
+export class RequiredFieldsValidation implements Validation {
   constructor(private readonly fieldName: string) {}
 
   validate(input: GenericObject): void | Error {
