@@ -1,20 +1,22 @@
 version: '3'
 services:
-  # Serviço do MongoDB
   mongo:
     image: mongo:6.0.8
     container_name: mongo_db
+    restart: always
     ports:
       - "27017:27017"
     volumes:
       - mongo_data:/data/db
 
-  # Serviço da aplicação Node.js
-  node_app:
+  api:
+    container_name: api-container
+    restart: always
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: url_shortener_app
+    image: url-shortener
+    command: npm run dev
     ports:
       - "3000:3000"
     depends_on:
