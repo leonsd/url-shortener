@@ -1,11 +1,15 @@
 import { Application, Router } from 'express';
-import fg from 'fast-glob';
+import fs from 'fs';
 
 export default (app: Application) => {
   const router = Router();
   app.use(router);
 
-  fg.sync('**/src/main/routes/**/**.routes.ts').map(async (filePath) => {
-    (await import(`../../../${filePath}`)).default(router);
-  });
+  fs.readdirSync(`${__dirname}/../routes`, { recursive: true }).map(
+    async (file) => {
+      if (!file.includes('.test.') && file.includes('.routes')) {
+        (await import(`../routes/${file}`)).default(router);
+      }
+    },
+  );
 };

@@ -4,9 +4,10 @@
   "description": "Url shortener",
   "main": "index.ts",
   "scripts": {
-    "start": "nodemon",
+    "start": "node build/main/server.js",
     "build": "npm run clean && tsc",
     "clean": "rimraf build",
+    "dev": "nodemon",
     "format": "prettier --ignore-path .gitignore --write \"**/*.+(js|ts|json)\"",
     "lint": "eslint --ext .js,.ts .",
     "prepare-husky": "husky install",
@@ -22,7 +23,6 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.18.2",
-    "fast-glob": "^3.3.1",
     "mongoose": "^7.4.2",
     "nanoid": "^3.3.6",
     "validator": "^13.9.0"
