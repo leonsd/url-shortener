@@ -1,6 +1,4 @@
-import { GetUrl } from '../../../domain/usecases/get-url.usecase';
-import { GetUrlRepository } from '../../protocols/db/get-url-repository.protocol';
-import { UrlModel } from '../shortener/url-shortener.protocol';
+import { UrlModel, GetUrlRepository, GetUrl } from './get-url.protocol';
 
 export class GetUrlUseCase implements GetUrl {
   constructor(private readonly urlRepository: GetUrlRepository) {}
